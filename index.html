@@ -1,12 +1,64 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Olá Mundo!</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Olá Mundo + Terra</title>
+  
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+      color: white;
+      font-family: Arial, Helvetica, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    h1 {
+      font-size: 4.5rem;
+      margin: 0;
+      text-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+      animation: pulse 3s infinite;
+    }
+
+    .terra {
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      box-shadow: 
+        0 0 60px rgba(0, 200, 255, 0.8),
+        inset 0 0 40px rgba(255, 255, 255, 0.3);
+      overflow: hidden;
+      animation: girar 20s linear infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50%      { transform: scale(1.08); }
+    }
+
+    @keyframes girar {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 <body>
-    <h1>Olá Mundo!</h1>
-    <p>Meu primeiro programa HTML.</p>
+
+  <h1>Olá Mundo!</h1>
+  
+  <div class="terra">
+    <img 
+      src="https://www.nasa.gov/wp-content/uploads/2023/11/earth-from-space.jpg" 
+      alt="Planeta Terra" 
+      style="width:100%; height:100%; object-fit: cover;"
+    >
+  </div>
+
 </body>
 </html>
