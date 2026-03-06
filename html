@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pega o Quadrado</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #0d001a;
+      font-family: Arial, Helvetica, sans-serif;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    h1 {
+      margin: 10px;
+      font-size: 2.8rem;
+      text-shadow: 0 0 15px #ff00aa;
+    }
+
+    #placar {
+      font-size: 2.2rem;
+      margin: 10px;
+      color: #00ffea;
+    }
+
+    #gameArea {
+      width: 90vmin;
+      height: 70vmin;
+      max-width: 600px;
+      max-height: 420px;
+      background: #111;
+      border: 4px solid #444;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 30px rgba(100, 0, 255, 0.4);
+    }
+
+    .alvo {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(45deg, #ff00cc, #00ffff);
+      border-radius: 50%;
+      position: absolute;
+      cursor: pointer;
+      box-shadow: 0 0 20px #ff00cc;
+      transition: transform 0.15s;
+    }
+
+    .alvo:active {
+      transform: scale(0.75);
+    }
+
+    #startBtn {
+      margin-top: 20px;
+      padding: 15px 40px;
+      font-size: 1.4rem;
+      background: #ff0066;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 20px #ff0066;
+    }
+
+    #startBtn:hover {
+      background: #ff3399;
+      transform: scale(1.08);
+    }
+
+    #gameOver {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 3rem;
+      color: #ff0044;
+      text-shadow: 0 0 20px #ff0044;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Pega o Quadrado!</h1>
+  <div id="placar">Pontos: 0</div>
+
+  <div id="gameArea">
+    <div id="gameOver">
+      <div>Fim de jogo!</div>
+      <div style="font-size:1.6rem; margin:20px 0;">Sua pontuação: <span id="finalScore">0</span></div>
+      <button id="restartBtn" style="padding:12px 30px; font-size:1.3rem;">Jogar novamente</button>
+    </div>
+  </div>
+
+  <button id="startBtn">Começar</button>
+
+  <script>
+    const gameArea = document.getElementById('gameArea');
+    const placar = document.getElementById('placar');
+    const startBtn = document.getElementById('startBtn');
+    const gameOverScreen = document.getElementById('gameOver');
+    const finalScore = document.getElementById('finalScore');
+    const restartBtn = document.getElementById('restartBtn');
+
+    let pontos = 0;
+    let tempoMin = 1200;
+    let jogoAtivo = false;
+    let alvoAtual = null;
+    let timer = null;
+
+    function criarAlvo() {
+      if (!jogoAtivo) return;
+
+      // remove alvo anterior se existir
+      if (alvoAtual) alvoAtual.remove();
+
+      const alvo = document.createElement('div');
+      alvo.classList.add('alvo');
+
+      // posição aleatória
+      const maxX = gameArea.clientWidth - 60;
+      const maxY = gameArea.clientHeight - 60;
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+
+      alvo.style.left = x + 'px';
+      alvo.style.top = y + 'px';
+
+      alvo.addEventListener('click', () => {
+        pontos++;
+        placar.textContent = `Pontos: ${pontos}`;
+
+        // aumenta dificuldade
+        if (pontos % 5 === 0 && tempoMin > 400) {
+          tempoMin -= 150;
+        }
+
+        criarAlvo();
+      });
+
+      gameArea.appendChild(alvo);
+      alvoAtual = alvo;
+
+      // tempo para desaparecer (game over se não clicar)
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        if (jogoAtivo) {
+          fimDeJogo();
+        }
+      }, tempoMin + 300); // um pouco mais de tempo no começo
+    }
+
+    function iniciarJogo() {
+      pontos = 0;
+      tempoMin = 1200;
+      placar.textContent = 'Pontos: 0';
+      gameOverScreen.style.display = 'none';
+      jogoAtivo = true;
+      startBtn.style.display = 'none';
+      criarAlvo();
+    }
+
+    function fimDeJogo() {
+      jogoAtivo = false;
+      clearTimeout(timer);
+      if (alvoAtual) alvoAtual.remove();
+      finalScore.textContent = pontos;
+      gameOverScreen.style.display = 'flex';
+    }
+
+    startBtn.addEventListener('click', iniciarJogo);
+    restartBtn.addEventListener('click', iniciarJogo);
+
+    // também permite começar com Enter ou Espaço
+    document.addEventListener('keydown', e => {
+      if ((e.code === 'Enter' || e.code === 'Space') && !jogoAtivo) {
+        iniciarJogo();
+      }
+    });
+  </script>
+
+</body>
+</html>
