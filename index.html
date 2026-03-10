@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Olá Mundo Terra Girando</title>
+  <title>Olá Mundo - Terra Girando</title>
   
   <style>
     body {
@@ -19,8 +19,8 @@
 
     .container {
       position: relative;
-      width: 320px;
-      height: 320px;
+      width: min(80vmin, 420px);
+      height: min(80vmin, 420px);
       text-align: center;
     }
 
@@ -28,11 +28,10 @@
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      background: url('https://images.unsplash.com/photo-1564053489984-317bbd824ace?w=800') center/cover;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/7/7f/Rotating_earth_animated_transparent.gif') center/cover no-repeat;
       box-shadow: 
-        0 0 60px rgba(100, 180, 255, 0.7),
-        inset 0 0 80px rgba(0, 0, 0, 0.6);
-      animation: spin 24s linear infinite;
+        0 0 80px rgba(80, 160, 255, 0.8),
+        inset 0 0 100px rgba(0, 0, 0, 0.7);
     }
 
     .text {
@@ -40,35 +39,31 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      color: white;
-      font-size: 3.8rem;
-      font-weight: bold;
+      color: #00ffff;
+      font-size: clamp(2.8rem, 9vw, 5rem);
+      font-weight: 900;
+      letter-spacing: 5px;
       text-shadow: 
         0 0 10px #00ffff,
         0 0 30px #00ffff,
-        0 0 60px #00aaff;
+        0 0 60px #0099ff,
+        0 0 100px #0044cc;
       pointer-events: none;
       z-index: 10;
       white-space: nowrap;
+      animation: pulse 5s ease-in-out infinite alternate;
     }
 
-    @keyframes spin {
-      from {
-        transform: rotate(0deg);
-      }
-      to {
-        transform: rotate(360deg);
-      }
+    @keyframes pulse {
+      from { opacity: 0.8; filter: brightness(1); }
+      to   { opacity: 1; filter: brightness(1.3); }
     }
   </style>
 </head>
 <body>
-
   <div class="container">
     <div class="earth"></div>
     <div class="text">Olá Mundo</div>
   </div>
-
 </body>
 </html>
- 
